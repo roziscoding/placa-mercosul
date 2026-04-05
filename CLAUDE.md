@@ -93,15 +93,9 @@ import -window "$(xdotool search --name Firefox | head -1)" /tmp/screenshot.png
 
 If none of these work, ask the user to send screenshots manually.
 
-## Adding a New Country Flag
+## Adding or Editing Country Flags
 
-1. Create `src/lib/flag-<country>.ts` exporting a function matching the `FlagBuilder` type signature: `(width, height, depth, style: "flat" | "relief") => THREE.Group`
-2. Follow the incremental development process above — start with a basic rectangle, add layers one by one
-3. In flat mode: each shape must have holes for overlapping layers (prevents z-fighting). Use `Path` for holes
-4. In relief mode: layers stack at increasing Z offsets (`layerDepth * n`)
-5. Always include a white border around the flag (see `flag-brazil.ts` for reference)
-6. Add the builder to the corresponding entry in `COUNTRY_TEMPLATES` in `types.ts`
-7. The ConfigPanel automatically shows/hides the flag toggle based on whether the template has a `flag` property
+**Always use the `/create-flag` skill** when the user wants to add a new flag or edit an existing one. The skill (`.claude/skills/create-flag.md`) contains the full step-by-step process, code patterns, and caveats. Do not attempt to create or modify flags without invoking it first.
 
 ## Dev Mode
 
