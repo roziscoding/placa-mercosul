@@ -139,14 +139,17 @@ export function buildBrazilFlag(
   const cr = h * 0.45
   const band = computeBandPoints(cr)
 
-  const layerDepth = depth / 4
+  const numberOfLayers = 5
+  const layerDepth = depth / numberOfLayers
   const flat = style === 'flat'
 
-  const z0 = 0
-  const z1 = flat ? 0 : layerDepth
-  const z2 = flat ? 0 : layerDepth * 2
-  const z3 = flat ? 0 : layerDepth * 3
-  const d = flat ? depth : layerDepth
+  // Relief: all start at z=0, each layer is progressively taller
+  // Each color gets its own unique depth tier for filament-swap printing
+  const d0 = flat ? depth : layerDepth        // white border (thinnest)
+  const d1 = flat ? depth : layerDepth * 2    // green rectangle
+  const d2 = flat ? depth : layerDepth * 3    // yellow diamond
+  const d3 = flat ? depth : layerDepth * 4    // blue circle
+  const d4 = flat ? depth : depth             // white band (tallest = full depth)
 
   // 0. White border around the flag
   const borderShape = new Shape()
@@ -165,9 +168,8 @@ export function buildBrazilFlag(
   greenHole.lineTo(-w, -h)
   borderShape.holes.push(greenHole)
 
-  const borderGeo = new ExtrudeGeometry(borderShape, { depth: d, bevelEnabled: false })
+  const borderGeo = new ExtrudeGeometry(borderShape, { depth: d0, bevelEnabled: false })
   const borderMesh = new Mesh(borderGeo, white)
-  borderMesh.position.z = z0
   group.add(borderMesh)
 
   // 1. Green rectangle (with diamond hole in flat mode)
@@ -182,9 +184,8 @@ export function buildBrazilFlag(
     rectShape.holes.push(makeDiamondPath(dw, dh))
   }
 
-  const rectGeo = new ExtrudeGeometry(rectShape, { depth: d, bevelEnabled: false })
+  const rectGeo = new ExtrudeGeometry(rectShape, { depth: d1, bevelEnabled: false })
   const rectMesh = new Mesh(rectGeo, green)
-  rectMesh.position.z = z0
   group.add(rectMesh)
 
   // 2. Yellow diamond (with circle hole in flat mode)
@@ -194,9 +195,8 @@ export function buildBrazilFlag(
     diamondShape.holes.push(makeCirclePath(cr))
   }
 
-  const diamondGeo = new ExtrudeGeometry(diamondShape, { depth: d, bevelEnabled: false })
+  const diamondGeo = new ExtrudeGeometry(diamondShape, { depth: d2, bevelEnabled: false })
   const diamondMesh = new Mesh(diamondGeo, yellow)
-  diamondMesh.position.z = z1
   group.add(diamondMesh)
 
   // 3. Blue circle (with band hole in flat mode)
@@ -208,17 +208,15 @@ export function buildBrazilFlag(
       circleShape.holes.push(bandPath)
   }
 
-  const circleGeo = new ExtrudeGeometry(circleShape, { depth: d, bevelEnabled: false })
+  const circleGeo = new ExtrudeGeometry(circleShape, { depth: d3, bevelEnabled: false })
   const circleMesh = new Mesh(circleGeo, blue)
-  circleMesh.position.z = z2
   group.add(circleMesh)
 
   // 4. White curved band
   const bandShape = makeBandShape(band)
   if (bandShape) {
-    const bandGeo = new ExtrudeGeometry(bandShape, { depth: d, bevelEnabled: false })
+    const bandGeo = new ExtrudeGeometry(bandShape, { depth: d4, bevelEnabled: false })
     const bandMesh = new Mesh(bandGeo, white)
-    bandMesh.position.z = z3
     group.add(bandMesh)
   }
 

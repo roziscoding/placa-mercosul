@@ -37,14 +37,15 @@ export function buildArgentinaFlag(
   const stripeH = height / 3 // each stripe is 1/3 of height
   const sunRadius = stripeH * 0.35 // sun fits within white stripe
 
-  const numberOfLayers = 4 // border, blue bg, white stripe, sun
+  const numberOfLayers = 4 // border, blue bg, white stripe, golden sun
   const layerDepth = depth / numberOfLayers
   const flat = style === 'flat'
 
-  const z0 = 0
-  const z1 = flat ? 0 : layerDepth
-  const z2 = flat ? 0 : layerDepth * 2
-  const d = flat ? depth : layerDepth
+  // Relief: each layer taller than the one below, all start at z=0
+  const dBorder = flat ? depth : layerDepth           // white border (thinnest)
+  const dBlue = flat ? depth : layerDepth * 2         // blue background
+  const dStripe = flat ? depth : layerDepth * 3       // white stripe (taller than blue)
+  const dSun = flat ? depth : depth                   // golden sun (tallest)
 
   // --- Helper: rectangle shape ---
   function makeRectShape(x1: number, y1: number, x2: number, y2: number): Shape {
@@ -88,9 +89,8 @@ export function buildArgentinaFlag(
   const borderShape = makeRectShape(-totalW, -totalH, totalW, totalH)
   borderShape.holes.push(makeRectPath(-w, -h, w, h))
 
-  const borderGeo = new ExtrudeGeometry(borderShape, { depth: d, bevelEnabled: false })
+  const borderGeo = new ExtrudeGeometry(borderShape, { depth: dBorder, bevelEnabled: false })
   const borderMesh = new Mesh(borderGeo, white)
-  borderMesh.position.z = z0
   group.add(borderMesh)
 
   // 1. Blue background (full rectangle, with hole for white stripe in flat mode)
@@ -99,9 +99,8 @@ export function buildArgentinaFlag(
     bgShape.holes.push(makeRectPath(-w, whiteY1, w, whiteY2))
   }
 
-  const bgGeo = new ExtrudeGeometry(bgShape, { depth: d, bevelEnabled: false })
+  const bgGeo = new ExtrudeGeometry(bgShape, { depth: dBlue, bevelEnabled: false })
   const bgMesh = new Mesh(bgGeo, lightBlue)
-  bgMesh.position.z = z0
   group.add(bgMesh)
 
   // 2. White stripe (middle third, with hole for sun in flat mode)
@@ -110,16 +109,14 @@ export function buildArgentinaFlag(
     stripeShape.holes.push(makeSunPath(sunRadius))
   }
 
-  const stripeGeo = new ExtrudeGeometry(stripeShape, { depth: d, bevelEnabled: false })
+  const stripeGeo = new ExtrudeGeometry(stripeShape, { depth: dStripe, bevelEnabled: false })
   const stripeMesh = new Mesh(stripeGeo, white)
-  stripeMesh.position.z = z1
   group.add(stripeMesh)
 
-  // 3. Sol de Mayo (12-point star)
+  // 3. Sol de Mayo
   const sunShape = makeSunShape(sunRadius)
-  const sunGeo = new ExtrudeGeometry(sunShape, { depth: d, bevelEnabled: false })
+  const sunGeo = new ExtrudeGeometry(sunShape, { depth: dSun, bevelEnabled: false })
   const sunMesh = new Mesh(sunGeo, golden)
-  sunMesh.position.z = z2
   group.add(sunMesh)
 
   return group

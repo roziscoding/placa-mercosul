@@ -44,14 +44,14 @@ export function buildUruguayFlag(
   const sunY = cantonTop - cantonSize / 2
   const sunRadius = cantonSize * 0.25
 
-  const numberOfLayers = 4 // border, white bg, blue stripes, sun
+  const numberOfLayers = 3 // white (border + bg), blue stripes, golden sun
   const layerDepth = depth / numberOfLayers
   const flat = style === 'flat'
 
-  const z0 = 0
-  const z1 = flat ? 0 : layerDepth
-  const z2 = flat ? 0 : layerDepth * 2
-  const d = flat ? depth : layerDepth
+  // Relief: each distinct color gets its own depth tier (all start at z=0)
+  const d0 = flat ? depth : layerDepth         // white (border + bg)
+  const d1 = flat ? depth : layerDepth * 2     // blue stripes
+  const d2 = flat ? depth : depth              // golden sun (tallest)
 
   // --- Helpers ---
   function makeRectShape(x1: number, y1: number, x2: number, y2: number): Shape {
@@ -93,9 +93,8 @@ export function buildUruguayFlag(
   const borderShape = makeRectShape(-totalW, -totalH, totalW, totalH)
   borderShape.holes.push(makeRectPath(-w, -h, w, h))
 
-  const borderGeo = new ExtrudeGeometry(borderShape, { depth: d, bevelEnabled: false })
+  const borderGeo = new ExtrudeGeometry(borderShape, { depth: d0, bevelEnabled: false })
   const borderMesh = new Mesh(borderGeo, white)
-  borderMesh.position.z = z0
   group.add(borderMesh)
 
   // 1. White background (full rectangle, with holes for blue stripes + sun in flat mode)
@@ -108,9 +107,8 @@ export function buildUruguayFlag(
     bgShape.holes.push(makeSunPath(sunX, sunY, sunRadius))
   }
 
-  const bgGeo = new ExtrudeGeometry(bgShape, { depth: d, bevelEnabled: false })
+  const bgGeo = new ExtrudeGeometry(bgShape, { depth: d0, bevelEnabled: false })
   const bgMesh = new Mesh(bgGeo, white)
-  bgMesh.position.z = z0
   group.add(bgMesh)
 
   // 2. Blue stripes (4 stripes, top 2 shortened to avoid canton)
@@ -118,9 +116,8 @@ export function buildUruguayFlag(
     const left = stripe.inCanton ? cantonRight : -w
     const stripeShape = makeRectShape(left, stripe.bottom, w, stripe.top)
 
-    const geo = new ExtrudeGeometry(stripeShape, { depth: d, bevelEnabled: false })
+    const geo = new ExtrudeGeometry(stripeShape, { depth: d1, bevelEnabled: false })
     const mesh = new Mesh(geo, blue)
-    mesh.position.z = z1
     group.add(mesh)
   }
 
@@ -128,9 +125,8 @@ export function buildUruguayFlag(
   const sunShape = new Shape()
   sunShape.absarc(sunX, sunY, sunRadius, 0, Math.PI * 2, false)
 
-  const sunGeo = new ExtrudeGeometry(sunShape, { depth: d, bevelEnabled: false })
+  const sunGeo = new ExtrudeGeometry(sunShape, { depth: d2, bevelEnabled: false })
   const sunMesh = new Mesh(sunGeo, golden)
-  sunMesh.position.z = z2
   group.add(sunMesh)
 
   return group

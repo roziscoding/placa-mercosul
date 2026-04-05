@@ -1,6 +1,7 @@
 <script lang='ts'>
   import type { PlateParams } from '../lib/types'
   import { COUNTRY_TEMPLATES, DEFAULT_PARAMS } from '../lib/types'
+  import { t } from '../lib/i18n.svelte'
 
   let { params = $bindable() }: { params: PlateParams } = $props()
 
@@ -44,23 +45,23 @@
   <section>
     <button class='section-header' onclick={() => toggle('text')}>
       <span class='arrow' class:open={openSections.text}></span>
-      Texto da Placa
+      {t('sectionPlateText')}
     </button>
     {#if openSections.text}
       <div class='section-body'>
         <label>
-          Placa
+          {t('plate')}
           <input type='text' bind:value={params.text} maxlength='30' />
         </label>
         <div class='toggle-row'>
-          <span>Texto longo:</span>
+          <span>{t('longText')}</span>
           <label class='toggle-option'>
             <input type='radio' bind:group={params.textFit} value='shrink' />
-            Reduzir
+            {t('shrink')}
           </label>
           <label class='toggle-option'>
             <input type='radio' bind:group={params.textFit} value='wrap' />
-            Quebrar linha
+            {t('wrap')}
           </label>
         </div>
       </div>
@@ -70,42 +71,42 @@
   <section>
     <button class='section-header' onclick={() => toggle('secondary')}>
       <span class='arrow' class:open={openSections.secondary}></span>
-      Textos Secundarios
+      {t('sectionSecondaryTexts')}
     </button>
     {#if openSections.secondary}
       <div class='section-body'>
         <label>
-          Template
+          {t('template')}
           <select onchange={applyCountry}>
-            <option value="">-- Selecionar pais --</option>
+            <option value="">{t('selectCountry')}</option>
             {#each COUNTRY_TEMPLATES as tmpl}
               <option value={tmpl.name}>{tmpl.name}</option>
             {/each}
           </select>
         </label>
         <label>
-          Pais
+          {t('country')}
           <input type='text' bind:value={params.countryText} maxlength='20' />
         </label>
         <label>
-          Codigo
+          {t('code')}
           <input type='text' bind:value={params.brText} maxlength='5' />
         </label>
         {#if hasFlag}
           <label class='toggle-option checkbox-option'>
             <input type='checkbox' bind:checked={params.showFlag} />
-            Mostrar bandeira
+            {t('showFlag')}
           </label>
           {#if params.showFlag}
             <div class='toggle-row'>
-              <span>Estilo:</span>
+              <span>{t('style')}</span>
               <label class='toggle-option'>
                 <input type='radio' bind:group={params.flagStyle} value='relief' />
-                Relevo
+                {t('relief')}
               </label>
               <label class='toggle-option'>
                 <input type='radio' bind:group={params.flagStyle} value='flat' />
-                Flat
+                {t('flat')}
               </label>
             </div>
           {/if}
@@ -117,12 +118,12 @@
   <section>
     <button class='section-header' onclick={() => toggle('dimensions')}>
       <span class='arrow' class:open={openSections.dimensions}></span>
-      Dimensoes
+      {t('sectionDimensions')}
     </button>
     {#if openSections.dimensions}
       <div class='section-body'>
         <label>
-          Comprimento: {params.length}mm
+          {t('length')}: {params.length}mm
           <input
             type='range'
             bind:value={params.length}
@@ -132,7 +133,7 @@
           />
         </label>
         <label>
-          Largura: {params.width}mm
+          {t('width')}: {params.width}mm
           <input
             type='range'
             bind:value={params.width}
@@ -142,7 +143,7 @@
           />
         </label>
         <label>
-          Espessura: {params.thickness}mm
+          {t('thickness')}: {params.thickness}mm
           <input
             type='range'
             bind:value={params.thickness}
@@ -152,7 +153,7 @@
           />
         </label>
         <label>
-          Raio dos cantos: {params.cornerRadius}mm
+          {t('cornerRadius')}: {params.cornerRadius}mm
           <input
             type='range'
             bind:value={params.cornerRadius}
@@ -168,12 +169,12 @@
   <section>
     <button class='section-header' onclick={() => toggle('border')}>
       <span class='arrow' class:open={openSections.border}></span>
-      Borda e Faixa
+      {t('sectionBorderStrip')}
     </button>
     {#if openSections.border}
       <div class='section-body'>
         <label>
-          Largura da borda: {params.borderWidth}mm
+          {t('borderWidth')}: {params.borderWidth}mm
           <input
             type='range'
             bind:value={params.borderWidth}
@@ -183,7 +184,7 @@
           />
         </label>
         <label>
-          Altura do relevo: {params.borderHeight}mm
+          {t('reliefHeight')}: {params.borderHeight}mm
           <input
             type='range'
             bind:value={params.borderHeight}
@@ -193,7 +194,7 @@
           />
         </label>
         <label>
-          Faixa azul: {params.blueStripHeight}mm
+          {t('blueStrip')}: {params.blueStripHeight}mm
           <input
             type='range'
             bind:value={params.blueStripHeight}
@@ -209,12 +210,12 @@
   <section>
     <button class='section-header' onclick={() => toggle('hole')}>
       <span class='arrow' class:open={openSections.hole}></span>
-      Furo
+      {t('sectionHole')}
     </button>
     {#if openSections.hole}
       <div class='section-body'>
         <label>
-          Diametro: {params.holeDiameter}mm
+          {t('diameter')}: {params.holeDiameter}mm
           <input
             type='range'
             bind:value={params.holeDiameter}
@@ -224,7 +225,7 @@
           />
         </label>
         <label>
-          Posicao X: {params.holeX}mm
+          {t('positionX')}: {params.holeX}mm
           <input
             type='range'
             bind:value={params.holeX}
@@ -234,7 +235,7 @@
           />
         </label>
         <label>
-          Posicao Y: {params.holeY}mm
+          {t('positionY')}: {params.holeY}mm
           <input
             type='range'
             bind:value={params.holeY}
@@ -250,14 +251,14 @@
   <section>
     <button class='section-header' onclick={() => toggle('textPosition')}>
       <span class='arrow' class:open={openSections.textPosition}></span>
-      Posicoes de Texto
+      {t('sectionTextPositions')}
     </button>
     {#if openSections.textPosition}
       <div class='section-body'>
         <fieldset>
-          <legend>Texto principal</legend>
+          <legend>{t('mainText')}</legend>
           <label>
-            Tamanho: {params.textSize}
+            {t('size')}: {params.textSize}
             <input
               type='range'
               bind:value={params.textSize}
@@ -287,7 +288,7 @@
             />
           </label>
           <label>
-            Espacamento: {params.textSpacing}
+            {t('spacing')}: {params.textSpacing}
             <input
               type='range'
               bind:value={params.textSpacing}
@@ -299,9 +300,9 @@
         </fieldset>
 
         <fieldset>
-          <legend>Texto pais</legend>
+          <legend>{t('countryText')}</legend>
           <label>
-            Tamanho: {params.countryTextSize}
+            {t('size')}: {params.countryTextSize}
             <input
               type='range'
               bind:value={params.countryTextSize}
@@ -331,7 +332,7 @@
             />
           </label>
           <label>
-            Espacamento: {params.countryTextSpacing}
+            {t('spacing')}: {params.countryTextSpacing}
             <input
               type='range'
               bind:value={params.countryTextSpacing}
@@ -343,9 +344,9 @@
         </fieldset>
 
         <fieldset>
-          <legend>Texto BR</legend>
+          <legend>{t('brText')}</legend>
           <label>
-            Tamanho: {params.brTextSize}
+            {t('size')}: {params.brTextSize}
             <input
               type='range'
               bind:value={params.brTextSize}
@@ -382,27 +383,27 @@
   <section>
     <button class='section-header' onclick={() => toggle('colors')}>
       <span class='arrow' class:open={openSections.colors}></span>
-      Cores
+      {t('sectionColors')}
     </button>
     {#if openSections.colors}
       <div class='section-body colors'>
         <label>
-          Base / Texto pais
+          {t('colorBaseCountry')}
           <input type='color' bind:value={params.baseColor} />
         </label>
         <label>
-          Borda / Texto placa / BR
+          {t('colorBorderPlate')}
           <input type='color' bind:value={params.borderColor} />
         </label>
         <label>
-          Faixa superior
+          {t('colorTopStrip')}
           <input type='color' bind:value={params.stripColor} />
         </label>
       </div>
     {/if}
   </section>
 
-  <button class='reset-btn' onclick={reset}>Restaurar Padrao</button>
+  <button class='reset-btn' onclick={reset}>{t('resetDefaults')}</button>
 </div>
 
 <style>

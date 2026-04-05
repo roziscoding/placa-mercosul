@@ -1,6 +1,7 @@
 <script lang='ts'>
   import ConfigPanel from './components/ConfigPanel.svelte'
   import PreviewCanvas from './components/PreviewCanvas.svelte'
+  import { getLocale, setLocale, t } from './lib/i18n.svelte'
   import { DEFAULT_PARAMS } from './lib/types'
 
   let params = $state({ ...DEFAULT_PARAMS })
@@ -17,20 +18,27 @@
     // Reset after a short delay (export is async via worker)
     setTimeout(() => (exporting = false), 2000)
   }
+
+  function toggleLocale() {
+    setLocale(getLocale() === 'pt' ? 'es' : 'pt')
+  }
 </script>
 
 <div class='app'>
   <aside class='sidebar'>
-    <h1>Placa Mercosul 3D</h1>
+    <div class='title-row'>
+      <h1>{t('appTitle')}</h1>
+      <button class='lang-btn' onclick={toggleLocale}>{getLocale() === 'pt' ? 'ES' : 'PT'}</button>
+    </div>
     <div class='config-scroll'>
       <ConfigPanel bind:params />
     </div>
     <div class='export-bar'>
       <button class='export-btn' onclick={handleExport} disabled={exporting || !exportFn}>
-        {exporting ? 'Exportando...' : 'Exportar STL'}
+        {exporting ? t('exporting') : t('exportStl')}
       </button>
       <div class='credits'>
-        Inspirado no <a href='https://makerworld.com/en/models/2218429-mercosur-car-license-plate' target='_blank' rel='noopener'>modelo de @yurizr</a>
+        {t('credits')} <a href='https://makerworld.com/en/models/2218429-mercosur-car-license-plate' target='_blank' rel='noopener'>{t('creditsModel')}</a>
       </div>
     </div>
   </aside>
@@ -38,9 +46,9 @@
     {#if isDev}
       <div class='dev-select'>
         <select bind:value={devModel}>
-          <option value='plate'>Placa completa</option>
-          <option value='flag-flat'>Bandeira (flat)</option>
-          <option value='flag-relief'>Bandeira (relief)</option>
+          <option value='plate'>{t('devPlate')}</option>
+          <option value='flag-flat'>{t('devFlagFlat')}</option>
+          <option value='flag-relief'>{t('devFlagRelief')}</option>
         </select>
       </div>
     {/if}
@@ -67,12 +75,34 @@
     border-right: 1px solid #e0e0e0;
   }
 
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
   h1 {
     font-size: 16px;
     font-weight: 700;
-    padding: 14px 12px;
-    border-bottom: 1px solid #e0e0e0;
+    padding: 14px 0;
     color: #222;
+  }
+
+  .lang-btn {
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #f8f8f8;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+  }
+
+  .lang-btn:hover {
+    background: #eee;
   }
 
   .config-scroll {

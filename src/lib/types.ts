@@ -1,6 +1,6 @@
 import { buildArgentinaFlag } from './flag-argentina'
-// Lazy import to avoid circular deps — flag builder is set at runtime
 import { buildBrazilFlag } from './flag-brazil'
+import { buildParaguayFlag } from './flag-paraguay'
 import { buildUruguayFlag } from './flag-uruguay'
 
 export interface PlateParams {
@@ -114,13 +114,5 @@ export const COUNTRY_TEMPLATES: CountryTemplate[] = [
   { name: 'Brasil', countryText: 'BRASIL', brText: 'BR', flag: buildBrazilFlag },
   { name: 'Argentina', countryText: 'ARGENTINA', brText: 'RA', flag: buildArgentinaFlag },
   { name: 'Uruguai', countryText: 'URUGUAY', brText: 'UY', flag: buildUruguayFlag },
-  { name: 'Paraguai', countryText: 'PARAGUAY', brText: 'PY' },
-  { name: 'Venezuela', countryText: 'VENEZUELA', brText: 'VE' },
-  { name: 'Bolivia', countryText: 'BOLIVIA', brText: 'BOL' },
-  { name: 'Colombia', countryText: 'COLOMBIA', brText: 'CO' },
-  { name: 'Equador', countryText: 'ECUADOR', brText: 'EC' },
-  { name: 'Peru', countryText: 'PERU', brText: 'PE' },
-  { name: 'Chile', countryText: 'CHILE', brText: 'RCH' },
-  { name: 'Guiana', countryText: 'GUYANA', brText: 'GUY' },
-  { name: 'Suriname', countryText: 'SURINAME', brText: 'SME' },
+  { name: 'Paraguai', countryText: 'PARAGUAY', brText: 'PY', flag: buildParaguayFlag },
 ]
