@@ -60,8 +60,8 @@ src/
 
 ## Adicionando bandeira de um novo país
 
-1. Criar `src/lib/flag-<pais>.ts` exportando uma função com a assinatura `FlagBuilder` (ver `types.ts`)
-2. Adicionar o import e a referência no `flag` do template correspondente em `COUNTRY_TEMPLATES`
+1. Criar `src/lib/flag-<pais>.ts` exportando uma função com a assinatura [`FlagBuilder`](src/lib/types.ts#L94) (ver [`flag-brazil.ts`](src/lib/flag-brazil.ts#L116) como referência)
+2. Adicionar o import e a referência no campo `flag` do template correspondente em [`COUNTRY_TEMPLATES`](src/lib/types.ts#L111)
 3. A bandeira deve suportar os modos `flat` (sem sobreposição, com holes) e `relief` (layers empilhados em Z)
 
 ## Créditos
