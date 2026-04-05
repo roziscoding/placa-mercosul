@@ -111,9 +111,10 @@ globalThis.onmessage = (e: MessageEvent<WorkerRequest>) => {
       )
     }
     else if (msg.type === 'export') {
+      group.updateMatrixWorld(true)
       const exporter = new STLExporter()
-      const result = exporter.parse(group, { binary: true })
-      const buffer = result as unknown as ArrayBuffer;
+      const result = exporter.parse(group, { binary: true }) as unknown as DataView
+      const buffer = result.buffer as ArrayBuffer
 
       (globalThis as unknown as Worker).postMessage(
         { type: 'stl', buffer } satisfies WorkerResponse,
