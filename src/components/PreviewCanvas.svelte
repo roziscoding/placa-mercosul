@@ -181,7 +181,7 @@
 
     // Load font on main thread, pass data to worker
     const ttfLoader = new TTFLoader()
-    ttfLoader.load('/fonts/RobotoCondensed-Bold.ttf', (json) => {
+    ttfLoader.load(`${import.meta.env.BASE_URL}fonts/RobotoCondensed-Bold.ttf`, (json) => {
       fontData = json
       requestBuild()
     })
