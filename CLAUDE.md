@@ -26,6 +26,7 @@ Web app to customize and export 3D Mercosul license plate keychains as STL files
 - `src/lib/plate-geometry.ts` — `buildPlateGroup()`: builds the full plate as a `THREE.Group`. Contains text fitting logic (shrink/wrap)
 - `src/lib/rounded-rect.ts` — `createRoundedRectShape()`: rounded rectangle as `THREE.Shape`
 - `src/lib/flag-brazil.ts` — `buildBrazilFlag()`: Brazilian flag with flat/relief modes
+- `src/lib/flag-argentina.ts` — `buildArgentinaFlag()`: Argentine flag with flat/relief modes
 - `src/lib/stl-export.ts` — STL export helpers
 - `src/lib/worker/plate-worker.ts` — Web Worker handling build + STL export. Also handles dev model switching
 - `src/components/PreviewCanvas.svelte` — Three.js scene, camera, lights, OrbitControls, worker communication, font loading via TTFLoader
@@ -95,7 +96,7 @@ If none of these work, ask the user to send screenshots manually.
 
 ## Adding or Editing Country Flags
 
-**Always use the `/create-flag` skill** when the user wants to add a new flag or edit an existing one. The skill (`.claude/skills/create-flag.md`) contains the full step-by-step process, code patterns, and caveats. Do not attempt to create or modify flags without invoking it first.
+**Always use the `/create-flag` skill** when the user wants to add a new flag or edit an existing one. The skill (`.claude/skills/create-flag/SKILL.md`) contains the full step-by-step process, code patterns, and caveats. Do not attempt to create or modify flags without invoking it first.
 
 ## Dev Mode
 
@@ -111,6 +112,7 @@ If none of these work, ask the user to send screenshots manually.
 - **ExtrudeGeometry direction**: extrudes from z=0 to z=+depth. The shape face at z=0 has normals pointing -Z, the back face at z=depth has normals pointing +Z. For text/elements that should be readable from above, place them at z=thickness and let them extrude upward
 - **Z-fighting**: when two shapes occupy the same Z range, use holes (`Shape.holes.push(new Path(...))`) to cut out overlapping areas instead of relying on render order
 - **Flag depth on plate**: flat flags use 0.2mm depth, relief flags use `borderHeight * 0.5`. Flags are positioned at `z = thickness + borderHeight` (on top of the border/strip)
+- **Printability over accuracy**: the flag on the plate is tiny (~4mm tall). Complex shapes (stars with thin points, fine text, detailed emblems) won't print well at this scale. Always prefer simple geometric shapes (circles instead of stars, rectangles instead of detailed coats of arms). Colors in the preview are just a visual reference — STL files have no color, users choose filament colors when printing
 
 ## Git
 

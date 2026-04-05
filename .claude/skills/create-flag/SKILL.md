@@ -39,6 +39,12 @@ Create the function returning only the base background shape of the flag (e.g., 
 
 In the worker file (`src/lib/worker/plate-worker.ts`), the dev model selector already handles this — it looks up the flag builder from `COUNTRY_TEMPLATES` by `flagCountry`. So you must register the flag in the template (step 7) before you can use the dev selector. Do that early with just the basic rectangle, then iterate.
 
+**Quick dev switching:** To avoid needing to interact with UI dropdowns (which can be unreliable with browser automation), temporarily change the defaults in code:
+- `DEFAULT_PARAMS.flagCountry` in `src/lib/types.ts` → set to the new country name
+- `devModel` initial value in `src/App.svelte` → set to `"flag-flat"` or `"flag-relief"`
+
+Remember to restore these defaults before committing.
+
 ### 4. Verify visually, then add the next layer
 
 Take a screenshot or ask the user to verify. Only proceed to the next element after confirming the current one looks correct. Add elements one at a time:
@@ -126,7 +132,7 @@ Switch the dev model selector back to "Placa completa" and verify the flag appea
 - **All shapes are centered at origin (0,0).** The flag function builds geometry centered at (0,0). Positioning on the plate is handled by `plate-geometry.ts`, not by the flag builder
 - **Shapes use Three.js 2D primitives:** `Shape` for filled areas, `Path` for holes. Use `moveTo`, `lineTo`, `quadraticCurveTo`, `absarc` etc.
 - **Every `Shape` needs a matching `Path` version** if it will be used as a hole in flat mode. Create helper functions for reusable shapes (see `makeDiamondShape`/`makeDiamondPath` pattern in `flag-brazil.ts`)
-- **Simplify complex emblems.** The flag will be tiny on the plate (~4mm tall). A coat of arms with fine detail won't be visible — simplify to basic geometric shapes
+- **Printability over accuracy.** The flag will be tiny on the plate (~4mm tall). Complex shapes (stars with thin points, fine text, detailed emblems) won't print well — simplify to basic geometric shapes that a 3D printer can handle (e.g., use a circle instead of a star with points, rectangles instead of detailed coats of arms). Colors in the preview are just a visual reference — STL has no color, users choose filament colors when printing
 - **Test flat mode for z-fighting.** If you see flickering/shimmering surfaces, a hole is missing. Every shape that overlaps with another at the same Z must have a hole cut
 - **Do NOT use CSG/boolean operations.** Use `Shape` with `Path` holes instead — it's much simpler and faster
 - **Mind the winding order.** Shapes should be defined counter-clockwise, holes clockwise (Three.js convention). If a hole appears inverted, reverse the point order
