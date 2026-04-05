@@ -48,6 +48,7 @@ const pt = {
   blueStrip: 'Faixa azul',
 
   // Hole
+  showHole: 'Mostrar furo',
   diameter: 'Diâmetro',
   positionX: 'Posição X',
   positionY: 'Posição Y',
@@ -118,6 +119,7 @@ const es: Record<TranslationKey, string> = {
   blueStrip: 'Franja azul',
 
   // Hole
+  showHole: 'Mostrar orificio',
   diameter: 'Diámetro',
   positionX: 'Posición X',
   positionY: 'Posición Y',

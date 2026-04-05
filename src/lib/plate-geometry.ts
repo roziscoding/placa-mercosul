@@ -146,8 +146,18 @@ export function buildPlateGroup(params: PlateParams, font: Font): Group {
 
   const group = new Group()
 
+  // Helper: create a circular hole path for cutting through shapes
+  function createCircleHolePath(cx: number, cy: number, radius: number): Path {
+    const holePath = new Path()
+    holePath.absarc(cx, cy, radius, 0, Math.PI * 2, false)
+    return holePath
+  }
+
   // 1. BASE — rounded rectangle extruded along Z
   const baseShape = createRoundedRectShape(L, W, cornerRadius)
+  if (params.showHole) {
+    baseShape.holes.push(createCircleHolePath(params.holeX, params.holeY, params.holeDiameter / 2))
+  }
   const baseGeo = new ExtrudeGeometry(baseShape, {
     depth: thickness,
     bevelEnabled: false,

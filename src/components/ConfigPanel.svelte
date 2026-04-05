@@ -214,6 +214,11 @@
     </button>
     {#if openSections.hole}
       <div class='section-body'>
+        <label class='toggle-option checkbox-option'>
+          <input type='checkbox' bind:checked={params.showHole} />
+          {t('showHole')}
+        </label>
+        {#if params.showHole}
         <label>
           {t('diameter')}: {params.holeDiameter}mm
           <input
@@ -244,6 +249,7 @@
             step='1'
           />
         </label>
+        {/if}
       </div>
     {/if}
   </section>

@@ -18,6 +18,7 @@ export interface PlateParams {
   blueStripHeight: number
 
   // Hole
+  showHole: boolean
   holeDiameter: number
   holeX: number
   holeY: number
@@ -65,6 +66,7 @@ export const DEFAULT_PARAMS: PlateParams = {
 
   blueStripHeight: 5.4,
 
+  showHole: true,
   holeDiameter: 3,
   holeX: -31,
   holeY: 0,
