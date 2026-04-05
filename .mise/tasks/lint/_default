@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Run ESLint"
+set -euo pipefail
+
+bunx eslint .

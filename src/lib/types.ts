@@ -1,52 +1,57 @@
+import { buildArgentinaFlag } from './flag-argentina'
+// Lazy import to avoid circular deps — flag builder is set at runtime
+import { buildBrazilFlag } from './flag-brazil'
+import { buildUruguayFlag } from './flag-uruguay'
+
 export interface PlateParams {
   // Plate dimensions
-  length: number;
-  width: number;
-  thickness: number;
-  cornerRadius: number;
+  length: number
+  width: number
+  thickness: number
+  cornerRadius: number
 
   // Border
-  borderWidth: number;
-  borderHeight: number;
+  borderWidth: number
+  borderHeight: number
 
   // Blue strip
-  blueStripHeight: number;
+  blueStripHeight: number
 
   // Hole
-  holeDiameter: number;
-  holeX: number;
-  holeY: number;
+  holeDiameter: number
+  holeX: number
+  holeY: number
 
   // Main text (plate number)
-  text: string;
-  textSize: number;
-  textX: number;
-  textY: number;
-  textSpacing: number;
-  textFit: "shrink" | "wrap";
+  text: string
+  textSize: number
+  textX: number
+  textY: number
+  textSpacing: number
+  textFit: 'shrink' | 'wrap'
 
   // Country text
-  countryText: string;
-  countryTextSize: number;
-  countryTextSpacing: number;
-  countryTextX: number;
-  countryTextY: number;
+  countryText: string
+  countryTextSize: number
+  countryTextSpacing: number
+  countryTextX: number
+  countryTextY: number
 
   // BR text
-  brText: string;
-  brTextSize: number;
-  brTextX: number;
-  brTextY: number;
+  brText: string
+  brTextSize: number
+  brTextX: number
+  brTextY: number
 
   // Flag
-  showFlag: boolean;
-  flagStyle: "flat" | "relief";
-  flagCountry: string; // matches CountryTemplate.name
+  showFlag: boolean
+  flagStyle: 'flat' | 'relief'
+  flagCountry: string // matches CountryTemplate.name
 
   // Colors (preview only, STL has no color)
-  baseColor: string;
-  borderColor: string;
-  stripColor: string;
+  baseColor: string
+  borderColor: string
+  stripColor: string
 }
 
 export const DEFAULT_PARAMS: PlateParams = {
@@ -64,63 +69,58 @@ export const DEFAULT_PARAMS: PlateParams = {
   holeX: -31,
   holeY: 0,
 
-  text: "ABC1B34",
+  text: 'ABC1B34',
   textSize: 9,
   textX: 0,
   textY: 0,
   textSpacing: 1.05,
-  textFit: "shrink",
+  textFit: 'shrink',
 
-  countryText: "BRASIL",
+  countryText: 'BRASIL',
   countryTextSize: 3.0,
   countryTextSpacing: 1.15,
   countryTextX: 0,
   countryTextY: 0,
 
-  brText: "BR",
+  brText: 'BR',
   brTextSize: 2.5,
   brTextX: -30,
   brTextY: -7,
 
   showFlag: true,
-  flagStyle: "flat",
-  flagCountry: "Brasil",
+  flagStyle: 'flat',
+  flagCountry: 'Brasil',
 
-  baseColor: "#ffffff",
-  borderColor: "#333333",
-  stripColor: "#003DA5",
-};
+  baseColor: '#ffffff',
+  borderColor: '#333333',
+  stripColor: '#003DA5',
+}
 
 export type FlagBuilder = (
   width: number,
   height: number,
   depth: number,
-  style: "flat" | "relief",
-) => import("three").Group;
+  style: 'flat' | 'relief',
+) => import('three').Group
 
 export interface CountryTemplate {
-  name: string;
-  countryText: string;
-  brText: string;
-  flag?: FlagBuilder;
+  name: string
+  countryText: string
+  brText: string
+  flag?: FlagBuilder
 }
 
-// Lazy import to avoid circular deps — flag builder is set at runtime
-import { buildBrazilFlag } from "./flag-brazil";
-import { buildArgentinaFlag } from "./flag-argentina";
-import { buildUruguayFlag } from "./flag-uruguay";
-
 export const COUNTRY_TEMPLATES: CountryTemplate[] = [
-  { name: "Brasil", countryText: "BRASIL", brText: "BR", flag: buildBrazilFlag },
-  { name: "Argentina", countryText: "ARGENTINA", brText: "RA", flag: buildArgentinaFlag },
-  { name: "Uruguai", countryText: "URUGUAY", brText: "UY", flag: buildUruguayFlag },
-  { name: "Paraguai", countryText: "PARAGUAY", brText: "PY" },
-  { name: "Venezuela", countryText: "VENEZUELA", brText: "VE" },
-  { name: "Bolivia", countryText: "BOLIVIA", brText: "BOL" },
-  { name: "Colombia", countryText: "COLOMBIA", brText: "CO" },
-  { name: "Equador", countryText: "ECUADOR", brText: "EC" },
-  { name: "Peru", countryText: "PERU", brText: "PE" },
-  { name: "Chile", countryText: "CHILE", brText: "RCH" },
-  { name: "Guiana", countryText: "GUYANA", brText: "GUY" },
-  { name: "Suriname", countryText: "SURINAME", brText: "SME" },
-];
+  { name: 'Brasil', countryText: 'BRASIL', brText: 'BR', flag: buildBrazilFlag },
+  { name: 'Argentina', countryText: 'ARGENTINA', brText: 'RA', flag: buildArgentinaFlag },
+  { name: 'Uruguai', countryText: 'URUGUAY', brText: 'UY', flag: buildUruguayFlag },
+  { name: 'Paraguai', countryText: 'PARAGUAY', brText: 'PY' },
+  { name: 'Venezuela', countryText: 'VENEZUELA', brText: 'VE' },
+  { name: 'Bolivia', countryText: 'BOLIVIA', brText: 'BOL' },
+  { name: 'Colombia', countryText: 'COLOMBIA', brText: 'CO' },
+  { name: 'Equador', countryText: 'ECUADOR', brText: 'EC' },
+  { name: 'Peru', countryText: 'PERU', brText: 'PE' },
+  { name: 'Chile', countryText: 'CHILE', brText: 'RCH' },
+  { name: 'Guiana', countryText: 'GUYANA', brText: 'GUY' },
+  { name: 'Suriname', countryText: 'SURINAME', brText: 'SME' },
+]

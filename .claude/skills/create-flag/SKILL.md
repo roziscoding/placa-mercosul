@@ -72,13 +72,13 @@ The flag must support two modes:
 Common pattern:
 
 ```typescript
-const layerDepth = depth / numberOfLayers;
-const flat = style === "flat";
+const layerDepth = depth / numberOfLayers
+const flat = style === 'flat'
 
-const z0 = 0;
-const z1 = flat ? 0 : layerDepth;
-const z2 = flat ? 0 : layerDepth * 2;
-const d = flat ? depth : layerDepth;
+const z0 = 0
+const z1 = flat ? 0 : layerDepth
+const z2 = flat ? 0 : layerDepth * 2
+const d = flat ? depth : layerDepth
 ```
 
 ### 6. Always add a white border
@@ -86,25 +86,25 @@ const d = flat ? depth : layerDepth;
 Every flag must have a white border rectangle as the outermost layer. This border MUST have a hole for the flag background shape (in both flat and relief modes) to avoid z-fighting.
 
 ```typescript
-const border = height * 0.06;
-const totalW = width / 2 + border;
-const totalH = height / 2 + border;
+const border = height * 0.06
+const totalW = width / 2 + border
+const totalH = height / 2 + border
 
-const borderShape = new Shape();
-borderShape.moveTo(-totalW, -totalH);
-borderShape.lineTo(totalW, -totalH);
-borderShape.lineTo(totalW, totalH);
-borderShape.lineTo(-totalW, totalH);
-borderShape.lineTo(-totalW, -totalH);
+const borderShape = new Shape()
+borderShape.moveTo(-totalW, -totalH)
+borderShape.lineTo(totalW, -totalH)
+borderShape.lineTo(totalW, totalH)
+borderShape.lineTo(-totalW, totalH)
+borderShape.lineTo(-totalW, -totalH)
 
 // Always cut hole for the background
-const bgHole = new Path();
-bgHole.moveTo(-w, -h);
-bgHole.lineTo(w, -h);
-bgHole.lineTo(w, h);
-bgHole.lineTo(-w, h);
-bgHole.lineTo(-w, -h);
-borderShape.holes.push(bgHole);
+const bgHole = new Path()
+bgHole.moveTo(-w, -h)
+bgHole.lineTo(w, -h)
+bgHole.lineTo(w, h)
+bgHole.lineTo(-w, h)
+bgHole.lineTo(-w, -h)
+borderShape.holes.push(bgHole)
 ```
 
 ### 7. Register the flag in COUNTRY_TEMPLATES

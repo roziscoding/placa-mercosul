@@ -1,52 +1,53 @@
-<script lang="ts">
-  import ConfigPanel from "./components/ConfigPanel.svelte";
-  import PreviewCanvas from "./components/PreviewCanvas.svelte";
-  import { DEFAULT_PARAMS } from "./lib/types";
+<script lang='ts'>
+  import ConfigPanel from './components/ConfigPanel.svelte'
+  import PreviewCanvas from './components/PreviewCanvas.svelte'
+  import { DEFAULT_PARAMS } from './lib/types'
 
-  let params = $state({ ...DEFAULT_PARAMS });
-  let exportFn: (() => void) | null = $state(null);
-  let exporting = $state(false);
-  let devModel = $state("plate");
-  const isDev = import.meta.env.DEV;
+  let params = $state({ ...DEFAULT_PARAMS })
+  let exportFn: (() => void) | null = $state(null)
+  let exporting = $state(false)
+  let devModel = $state('plate')
+  const isDev = import.meta.env.DEV
 
   function handleExport() {
-    if (!exportFn) return;
-    exporting = true;
-    exportFn();
+    if (!exportFn)
+      return
+    exporting = true
+    exportFn()
     // Reset after a short delay (export is async via worker)
-    setTimeout(() => (exporting = false), 2000);
+    setTimeout(() => (exporting = false), 2000)
   }
 </script>
 
-<div class="app">
-  <aside class="sidebar">
+<div class='app'>
+  <aside class='sidebar'>
     <h1>Placa Mercosul 3D</h1>
-    <div class="config-scroll">
+    <div class='config-scroll'>
       <ConfigPanel bind:params />
     </div>
-    <div class="export-bar">
-      <button class="export-btn" onclick={handleExport} disabled={exporting || !exportFn}>
-        {exporting ? "Exportando..." : "Exportar STL"}
+    <div class='export-bar'>
+      <button class='export-btn' onclick={handleExport} disabled={exporting || !exportFn}>
+        {exporting ? 'Exportando...' : 'Exportar STL'}
       </button>
-      <div class="credits">
-        Inspirado no <a href="https://makerworld.com/en/models/2218429-mercosur-car-license-plate" target="_blank" rel="noopener">modelo de @yurizr</a>
+      <div class='credits'>
+        Inspirado no <a href='https://makerworld.com/en/models/2218429-mercosur-car-license-plate' target='_blank' rel='noopener'>modelo de @yurizr</a>
       </div>
     </div>
   </aside>
-  <main class="preview">
+  <main class='preview'>
     {#if isDev}
-      <div class="dev-select">
+      <div class='dev-select'>
         <select bind:value={devModel}>
-          <option value="plate">Placa completa</option>
-          <option value="flag-flat">Bandeira (flat)</option>
-          <option value="flag-relief">Bandeira (relief)</option>
+          <option value='plate'>Placa completa</option>
+          <option value='flag-flat'>Bandeira (flat)</option>
+          <option value='flag-relief'>Bandeira (relief)</option>
         </select>
       </div>
     {/if}
     <PreviewCanvas
       {params}
       {devModel}
-      onExportReady={(fn) => (exportFn = fn)}
+      onExportReady={fn => (exportFn = fn)}
     />
   </main>
 </div>
